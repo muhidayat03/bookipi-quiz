@@ -74,7 +74,7 @@ const QuizDetailPage = () => {
       )}
       <button
         onClick={handleStart}
-        disabled={startAttempt.isPending}
+        disabled={startAttempt.isPending || !quiz?.questions?.length}
         className="px-7 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold rounded-lg duration-120"
       >
         {startAttempt.isPending ? 'Starting…' : 'Start Quiz'}

@@ -6,7 +6,7 @@ import { useQuizzes } from '../queries'
 const HomePage = () => {
   const location = useLocation()
   const navigate = useNavigate()
-  const tab = location.pathname === '/build' ? 'build' : 'play'
+  const tab = location.pathname === '/build' ? 'build' : 'quiz'
 
   const [quizId, setQuizId] = useState('')
   const [idError, setIdError] = useState('')
@@ -29,31 +29,31 @@ const HomePage = () => {
     <div className="max-w-170 mx-auto px-6 pt-10 pb-24">
       <div className="flex items-center justify-between mb-7">
         <Link
-          to="/play"
+          to="/quiz"
           className="flex items-center gap-3 font-bold text-lg tracking-tight no-underline text-slate-900"
         >
           <span className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-sm">
-            Q
+            B
           </span>
-          Quiz Maker
+          Bookipi Quiz
         </Link>
         <div className="inline-flex bg-slate-100 border border-slate-200 rounded-[10px] p-1 gap-1">
           <Link
-            to="/play"
-            className={`px-5 py-2 rounded-[7px] font-semibold text-sm cursor-pointer no-underline duration-120 ${tab === 'play' ? 'bg-white text-slate-900 shadow-tab' : 'text-slate-500 hover:text-slate-900'}`}
+            to="/quiz"
+            className={`px-5 py-2 rounded-[7px] font-semibold text-sm cursor-pointer no-underline duration-120 ${tab === 'quiz' ? 'bg-white text-slate-900 shadow-tab' : 'text-slate-500 hover:text-slate-900'}`}
           >
-            Play
+            Player
           </Link>
           <Link
             to="/build"
             className={`px-5 py-2 rounded-[7px] font-semibold text-sm cursor-pointer no-underline duration-120 ${tab === 'build' ? 'bg-white text-slate-900 shadow-tab' : 'text-slate-500 hover:text-slate-900'}`}
           >
-            Build
+            Builder
           </Link>
         </div>
       </div>
 
-      {tab === 'play' ? (
+      {tab === 'quiz' ? (
         <>
           <h1 className="text-2xl font-bold tracking-tight mb-1">Play a quiz</h1>
           <p className="text-slate-500 mb-7 text-sm">
@@ -61,18 +61,19 @@ const HomePage = () => {
           </p>
 
           <div className="bg-white border border-slate-200 rounded-xl shadow-card p-6 mb-8">
-            <label className="font-semibold text-sm block mb-2">Quiz ID</label>
+            <label htmlFor="quiz-id" className="font-semibold text-sm block mb-2">Quiz ID</label>
             <div className="flex gap-3">
               <input
+                id="quiz-id"
                 type="text"
                 inputMode="numeric"
-                placeholder="e.g. 1042"
+                placeholder="e.g. 123"
                 value={quizId}
                 onChange={(e) => {
                   setQuizId(e.target.value)
                   setIdError('')
                 }}
-                className={`w-full px-3 py-3 border rounded-lg text-base font-[inherit] focus:outline-none focus:border-blue-600 focus:shadow-focus duration-120 ${idError ? 'border-red-500' : 'border-slate-200'}`}
+                className={`w-full px-3 py-3 border rounded-lg text-base focus:outline-none focus:border-blue-600 focus:shadow-focus duration-120 ${idError ? 'border-red-500' : 'border-slate-200'}`}
               />
               <button
                 onClick={handleTakeQuiz}
@@ -95,11 +96,11 @@ const HomePage = () => {
             </div>
           )}
           {error && <p className="text-red-600 text-sm">Failed to load quizzes.</p>}
-          {!isLoading && published.length === 0 && (
+          {!isLoading && !error && published.length === 0 && (
             <div className="text-center px-6 py-12 text-slate-500 border border-dashed border-slate-300 rounded-xl bg-white">
               <div className="text-3xl mb-2">🔍</div>
-              <div className="font-semibold text-slate-900 mb-1">No public quizzes yet</div>
-              <div className="text-sm">Ask a creator for a quiz ID to get started.</div>
+              <div className="font-semibold text-slate-900 mb-1">No quizzes yet</div>
+              <div className="text-sm">Create your first quiz on the Builder tab to get started.</div>
             </div>
           )}
           {published.length > 0 && (
@@ -143,7 +144,7 @@ const HomePage = () => {
             </div>
           )}
           {error && <p className="text-red-600 text-sm">Failed to load quizzes.</p>}
-          {!isLoading && quizzes?.length === 0 && (
+          {!isLoading && !error && quizzes?.length === 0 && (
             <div className="text-center px-6 py-12 text-slate-500 border border-dashed border-slate-300 rounded-xl bg-white">
               <div className="text-3xl mb-2">✏️</div>
               <div className="font-semibold text-slate-900 mb-1">No quizzes yet</div>

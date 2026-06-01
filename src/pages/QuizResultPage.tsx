@@ -1,10 +1,16 @@
 import clsx from 'clsx'
-import { Navigate, useParams } from 'react-router'
+import { Navigate, useNavigate, useParams } from 'react-router'
 import { useQuizContext } from '@/context'
 
 const QuizResultPage = () => {
   const { id } = useParams()
-  const { result, attempt } = useQuizContext()
+  const navigate = useNavigate()
+  const { result, attempt, reset } = useQuizContext()
+
+  const handleRetry = () => {
+    reset()
+    navigate(`/quiz/${id}`)
+  }
 
   if (!result) return <Navigate to={`/quiz/${id}`} replace />
 
@@ -52,6 +58,15 @@ const QuizResultPage = () => {
             </span>
           </div>
         ))}
+      </div>
+
+      <div className="mt-8 text-center">
+        <button
+          onClick={handleRetry}
+          className="px-7 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg duration-120"
+        >
+          Try Again
+        </button>
       </div>
     </div>
   )

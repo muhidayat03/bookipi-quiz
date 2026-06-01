@@ -15,7 +15,7 @@ const QuizLayout = () => {
     <QuizProvider>
       <div className="max-w-170 mx-auto px-6 pt-10">
         <button
-          onClick={() => navigate('/play')}
+          onClick={() => navigate('/quiz')}
           className="text-slate-500 text-sm font-medium mb-5 hover:text-slate-900 duration-120"
         >
           ← Home
@@ -30,8 +30,8 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/play" replace />} />
-        <Route path="/play" element={<HomePage />} />
+        <Route path="/" element={<Navigate to="/quiz" replace />} />
+        <Route path="/quiz" element={<HomePage />} />
         <Route path="/build" element={<HomePage />} />
         <Route path="/builder" element={<BuilderPage />} />
         <Route path="/builder/:id" element={<BuilderPage />} />
