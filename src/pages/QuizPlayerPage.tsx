@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import { useNavigate, useParams, Navigate } from 'react-router'
-import QuestionCard from '../components/QuestionCard'
-import { useSaveAnswer, useSubmitAttempt } from '../queries'
-import { useQuizContext } from '../context/QuizContext'
+import { QuestionCard } from '@/components'
+import { useSaveAnswer, useSubmitAttempt } from '@/queries'
+import { useQuizContext } from '@/context'
 
 const QuizPlayerPage = () => {
   const { id } = useParams()

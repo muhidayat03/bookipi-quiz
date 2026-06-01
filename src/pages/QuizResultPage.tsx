@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { Navigate, useParams } from 'react-router'
-import { useQuizContext } from '../context/QuizContext'
+import { useQuizContext } from '@/context'
 
 const QuizResultPage = () => {
   const { id } = useParams()

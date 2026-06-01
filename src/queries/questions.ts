@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { queryKeys, addQuestion, updateQuestion, deleteQuestion } from '../api'
+import { queryKeys, addQuestion, updateQuestion, deleteQuestion } from '@/api'
 
 export const useAddQuestion = (quizId: number) => {
   const qc = useQueryClient()

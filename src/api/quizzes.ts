@@ -1,6 +1,6 @@
 import client from './axiosClient'
 import { endpoints } from './constants'
-import type { Quiz } from '../types'
+import type { Quiz } from '@/types'
 
 export const fetchQuizzes = async (): Promise<Quiz[]> => {
   const { data } = await client.get(endpoints.quizzes)

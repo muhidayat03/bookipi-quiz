@@ -1,6 +1,6 @@
 import client from './axiosClient'
 import { endpoints } from './constants'
-import type { Question, QuestionType } from '../types'
+import type { Question, QuestionType } from '@/types'
 
 export const addQuestion = async (
   quizId: number,

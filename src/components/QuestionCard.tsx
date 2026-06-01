@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import type { Question } from '../types'
+import type { Question } from '@/types'
 
 interface Props {
   question: Omit<Question, 'correctAnswer'>

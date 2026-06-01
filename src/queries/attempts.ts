@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query'
-import { startAttempt, saveAnswer, submitAttempt } from '../api'
+import { startAttempt, saveAnswer, submitAttempt } from '@/api'
 
 export const useStartAttempt = () =>
   useMutation({ mutationFn: (quizId: number) => startAttempt(quizId) })

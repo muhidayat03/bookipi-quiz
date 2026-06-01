@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from 'react-router'
 import axios from 'axios'
-import ErrorCard from '../components/ErrorCard'
-import { useQuiz, useStartAttempt } from '../queries'
-import { useQuizContext } from '../context/QuizContext'
+import { ErrorCard } from '@/components'
+import { useQuiz, useStartAttempt } from '@/queries'
+import { useQuizContext } from '@/context'
 
 const QuizDetailPage = () => {
   const { id } = useParams()

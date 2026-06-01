@@ -1,6 +1,6 @@
 import client from './axiosClient'
 import { endpoints } from './constants'
-import type { Attempt, SubmitResult } from '../types'
+import type { Attempt, SubmitResult } from '@/types'
 
 export const startAttempt = async (quizId: number): Promise<Attempt> => {
   const { data } = await client.post(endpoints.attempts, { quizId })
