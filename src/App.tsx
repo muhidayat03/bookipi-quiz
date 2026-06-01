@@ -1,6 +1,13 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useNavigate } from 'react-router'
-import { HomePage, BuilderPage, QuizDetailPage, QuizPlayerPage, QuizResultPage, NotFoundPage } from './pages'
-import { QuizProvider } from './context/QuizContext'
+import {
+  HomePage,
+  BuilderPage,
+  QuizDetailPage,
+  QuizPlayerPage,
+  QuizResultPage,
+  NotFoundPage,
+} from '@/pages'
+import { QuizProvider } from '@/context'
 
 const QuizLayout = () => {
   const navigate = useNavigate()

@@ -1,4 +1,4 @@
-import type { Quiz } from '../types'
+import type { Quiz } from '@/types'
 
 interface Props {
   quiz: Quiz
@@ -21,5 +21,18 @@ const QuizCard = ({ quiz, action }: Props) => {
     </div>
   )
 }
+
+QuizCard.Loading = () => (
+  <div className="bg-white border border-slate-200 rounded-xl shadow-card p-6 flex justify-between items-center gap-4">
+    <div className="animate-pulse flex-1">
+      <div className="h-5 bg-slate-200 rounded w-40" />
+      <div className="h-4 bg-slate-200 rounded w-64 mt-3" />
+      <div className="h-3.5 bg-slate-200 rounded w-20 mt-3" />
+    </div>
+    <div className="animate-pulse shrink-0">
+      <div className="h-10 bg-slate-200 rounded-lg w-21" />
+    </div>
+  </div>
+)
 
 export default QuizCard

@@ -1,17 +1,6 @@
-import { createContext, useContext, useState } from 'react'
-import type { Attempt, SubmitResult } from '../types'
-
-interface QuizContextValue {
-  attempt: Attempt | null
-  answers: Record<number, string>
-  result: SubmitResult | null
-  setAttempt: (a: Attempt) => void
-  setAnswers: (a: Record<number, string>) => void
-  setResult: (r: SubmitResult) => void
-  reset: () => void
-}
-
-const QuizContext = createContext<QuizContextValue | null>(null)
+import { useState } from 'react'
+import type { Attempt, SubmitResult } from '@/types'
+import { QuizContext } from './useQuizContext'
 
 export const QuizProvider = ({ children }: { children: React.ReactNode }) => {
   const [attempt, setAttempt] = useState<Attempt | null>(null)
@@ -25,14 +14,10 @@ export const QuizProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    <QuizContext.Provider value={{ attempt, answers, result, setAttempt, setAnswers, setResult, reset }}>
+    <QuizContext.Provider
+      value={{ attempt, answers, result, setAttempt, setAnswers, setResult, reset }}
+    >
       {children}
     </QuizContext.Provider>
   )
-}
-
-export const useQuizContext = () => {
-  const ctx = useContext(QuizContext)
-  if (!ctx) throw new Error('useQuizContext must be used within QuizProvider')
-  return ctx
 }
