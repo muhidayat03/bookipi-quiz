@@ -1,39 +1,24 @@
 import clsx from 'clsx'
-import { useLocation, useNavigate, Navigate } from 'react-router'
-import type { SubmitResult } from '../types'
+import { Navigate, useParams } from 'react-router'
+import { useQuizContext } from '../context/QuizContext'
 
-interface LocationState {
-  result: SubmitResult
-  total: number
-}
+const QuizResultPage = () => {
+  const { id } = useParams()
+  const { result, attempt } = useQuizContext()
 
-const ResultsPage = () => {
-  const { state } = useLocation()
-  const navigate = useNavigate()
+  if (!result) return <Navigate to={`/quiz/${id}`} replace />
 
-  const handleClickHome = () => navigate('/')
-
-  if (!state) return <Navigate to="/" replace />
-
-  const { result, total } = state as LocationState
-  const resolvedTotal = result.details.length || total
-  const percentage = Math.round((result.score / resolvedTotal) * 100)
+  const total = attempt?.quiz.questions.length ?? result.details.length
+  const percentage = Math.round((result.score / total) * 100)
   const feedback =
     percentage >= 80 ? 'Excellent work!' : percentage >= 50 ? 'Nice effort.' : 'Keep practicing!'
 
   return (
-    <div className="max-w-170 mx-auto px-6 pt-10 pb-24">
-      <button
-        onClick={handleClickHome}
-        className="text-slate-500 text-sm font-medium mb-5 hover:text-slate-900 duration-120"
-      >
-        ← Home
-      </button>
-
+    <div className="pb-24">
       <div className="bg-white border border-slate-200 rounded-xl shadow-card p-10 text-center mb-8">
         <div className="font-extrabold text-6xl leading-none tracking-tight tabular-nums">
           {result.score}
-          <span className="text-slate-400 font-bold"> / {resolvedTotal}</span>
+          <span className="text-slate-400 font-bold"> / {total}</span>
         </div>
         <div className="text-slate-500 font-medium text-base mt-2">
           {percentage}% correct — {feedback}
@@ -51,7 +36,7 @@ const ResultsPage = () => {
               'flex items-center justify-between px-5 py-4 rounded-lg text-sm font-medium border gap-4',
               d.correct
                 ? 'bg-green-50 text-green-800 border-green-200'
-                : 'bg-red-50 text-red-800 border-red-200',
+                : 'bg-red-50 text-red-800 border-red-200'
             )}
           >
             <div className="flex flex-col gap-1 min-w-0">
@@ -68,15 +53,8 @@ const ResultsPage = () => {
           </div>
         ))}
       </div>
-
-      <button
-        onClick={handleClickHome}
-        className="w-full mt-7 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg duration-120"
-      >
-        Back to Home
-      </button>
     </div>
   )
 }
 
-export default ResultsPage
+export default QuizResultPage

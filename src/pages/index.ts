@@ -1,5 +1,6 @@
 export { default as HomePage } from './HomePage'
 export { default as BuilderPage } from './BuilderPage'
-export { default as PlayerPage } from './PlayerPage'
-export { default as ResultsPage } from './ResultsPage'
+export { default as QuizDetailPage } from './QuizDetailPage'
+export { default as QuizPlayerPage } from './QuizPlayerPage'
+export { default as QuizResultPage } from './QuizResultPage'
 export { default as NotFoundPage } from './NotFoundPage'
