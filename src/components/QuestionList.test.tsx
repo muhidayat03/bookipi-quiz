@@ -74,7 +74,6 @@ describe('QuestionList', () => {
 
   it('renders MCQ options', () => {
     render(<QuestionList {...defaultProps} questions={[questions[0]]} />)
-    // Use start-of-string regex to avoid matching the same words in the prompt
     ;['object', 'null', 'undefined'].forEach((opt) =>
       expect(screen.getByText(new RegExp(`^${opt}`))).toBeInTheDocument()
     )
@@ -87,13 +86,7 @@ describe('QuestionList', () => {
 
   it('calls setEditingQuestionId with the question id when edit is clicked', async () => {
     const setEditingQuestionId = vi.fn()
-    render(
-      <QuestionList
-        {...defaultProps}
-        questions={questions}
-        setEditingQuestionId={setEditingQuestionId}
-      />
-    )
+    render(<QuestionList {...defaultProps} questions={questions} setEditingQuestionId={setEditingQuestionId} />)
     await userEvent.click(screen.getAllByTitle('Edit')[0])
     expect(setEditingQuestionId).toHaveBeenCalledWith(1)
   })
@@ -111,14 +104,7 @@ describe('QuestionList', () => {
 
   it('calls setEditingQuestionId with null when cancel is clicked in edit mode', async () => {
     const setEditingQuestionId = vi.fn()
-    render(
-      <QuestionList
-        {...defaultProps}
-        questions={questions}
-        editingQuestionId={1}
-        setEditingQuestionId={setEditingQuestionId}
-      />
-    )
+    render(<QuestionList {...defaultProps} questions={questions} editingQuestionId={1} setEditingQuestionId={setEditingQuestionId} />)
     await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
     expect(setEditingQuestionId).toHaveBeenCalledWith(null)
   })

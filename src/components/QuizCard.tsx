@@ -23,7 +23,7 @@ const QuizCard = ({ quiz, action }: Props) => {
 }
 
 QuizCard.Loading = () => (
-  <div className="bg-white border border-slate-200 rounded-xl shadow-card p-6 flex justify-between items-center gap-4">
+  <div data-testid="quiz-card-loading" className="bg-white border border-slate-200 rounded-xl shadow-card p-6 flex justify-between items-center gap-4">
     <div className="animate-pulse flex-1">
       <div className="h-5 bg-slate-200 rounded w-40" />
       <div className="h-4 bg-slate-200 rounded w-64 mt-3" />

@@ -15,6 +15,7 @@ interface QuizContextValue {
 
 export const QuizContext = createContext<QuizContextValue | null>(null)
 
+// split this from QuizContext to resolve fast refresh
 export const useQuizContext = () => {
   const ctx = useContext(QuizContext)
   if (!ctx) throw new Error('useQuizContext must be used within QuizProvider')

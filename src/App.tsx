@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, Outlet, useNavigate } from 'react-router'
-import { HomePage, BuilderPage, QuizDetailPage, QuizPlayerPage, QuizResultPage } from '@/pages'
+import { HomePage, QuizBuilderPage, QuizDetailPage, QuizPlayerPage, QuizResultPage } from '@/pages'
 import { QuizProvider } from '@/context'
 
 const QuizLayout = () => {
@@ -41,8 +41,8 @@ const App = () => {
         <Route path="/quiz" element={<HomePage />} />
         <Route path="/build" element={<HomePage />} />
         <Route element={<BuilderLayout />}>
-          <Route path="/builder" element={<BuilderPage />} />
-          <Route path="/builder/:id" element={<BuilderPage />} />
+          <Route path="/builder" element={<QuizBuilderPage />} />
+          <Route path="/builder/:id" element={<QuizBuilderPage />} />
         </Route>
         <Route element={<QuizLayout />}>
           <Route path="/quiz/:id" element={<QuizDetailPage />} />

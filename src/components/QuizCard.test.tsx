@@ -24,8 +24,8 @@ describe('QuizCard', () => {
     expect(screen.getByRole('button', { name: 'Take Quiz' })).toBeInTheDocument()
   })
 
-  it('renders the loading skeleton without quiz data', () => {
+  it('renders the loading skeleton', () => {
     render(<QuizCard.Loading />)
-    expect(screen.queryByText(/Quiz ID/)).not.toBeInTheDocument()
+    expect(screen.getByTestId('quiz-card-loading')).toBeInTheDocument()
   })
 })

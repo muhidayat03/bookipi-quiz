@@ -16,7 +16,7 @@ import {
 } from '@/queries'
 import { getApiError } from '@/utils'
 
-const BuilderPage = () => {
+const QuizBuilderPage = () => {
   const { id } = useParams()
   const quizId = id ? Number(id) : 0
   const navigate = useNavigate()
@@ -128,4 +128,4 @@ const BuilderPage = () => {
   )
 }
 
-export default BuilderPage
+export default QuizBuilderPage

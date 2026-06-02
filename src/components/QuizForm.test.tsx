@@ -25,7 +25,6 @@ describe('QuizForm', () => {
     await userEvent.type(screen.getByLabelText(/title/i), 'My Quiz')
     await userEvent.type(screen.getByLabelText(/description/i), 'A fun quiz')
     await userEvent.click(screen.getByRole('button', { name: 'Create Quiz' }))
-    // react-hook-form calls onSubmit(data, event) — match first arg only
     await waitFor(() =>
       expect(onSubmit).toHaveBeenCalledWith(
         { title: 'My Quiz', description: 'A fun quiz' },

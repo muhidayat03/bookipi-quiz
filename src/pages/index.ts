@@ -1,5 +1,5 @@
 export { default as HomePage } from './HomePage'
-export { default as BuilderPage } from './BuilderPage'
+export { default as QuizBuilderPage } from './QuizBuilderPage'
 export { default as QuizDetailPage } from './QuizDetailPage'
 export { default as QuizPlayerPage } from './QuizPlayerPage'
 export { default as QuizResultPage } from './QuizResultPage'
