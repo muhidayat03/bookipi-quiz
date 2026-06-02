@@ -15,6 +15,13 @@ const HomePage = () => {
 
   const published = quizzes?.filter((quiz) => quiz.isPublished) ?? []
 
+  const handleChangeQuizId = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuizId(e.target.value)
+    setIdError('')
+  }
+
+  const handlePlayQuiz = (id: number) => () => navigate(`/quiz/${id}`)
+
   const handleTakeQuiz = () => {
     const v = quizId.trim()
     if (!/^\d+$/.test(v) || parseInt(v, 10) <= 0) {
@@ -69,10 +76,7 @@ const HomePage = () => {
                 inputMode="numeric"
                 placeholder="e.g. 123"
                 value={quizId}
-                onChange={(e) => {
-                  setQuizId(e.target.value)
-                  setIdError('')
-                }}
+                onChange={handleChangeQuizId}
                 className={`w-full px-3 py-3 border rounded-lg text-base focus:outline-none focus:border-blue-600 focus:shadow-focus duration-120 ${idError ? 'border-red-500' : 'border-slate-200'}`}
               />
               <button
@@ -111,7 +115,7 @@ const HomePage = () => {
                   quiz={q}
                   action={
                     <button
-                      onClick={() => navigate(`/quiz/${q.id}`)}
+                      onClick={handlePlayQuiz(q.id)}
                       className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg duration-120"
                     >
                       Play →

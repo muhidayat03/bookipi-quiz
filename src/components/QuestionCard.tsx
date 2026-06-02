@@ -9,6 +9,9 @@ interface Props {
 }
 
 const QuestionCard = ({ question, value, onChange }: Props) => {
+  const handleClickOption = (i: number) => () => onChange(String(i))
+  const handleChangeAnswer = (e: React.ChangeEvent<HTMLInputElement>) => onChange(e.target.value)
+
   return (
     <div className="bg-white border border-slate-200 rounded-xl shadow-card p-8">
       <div className="text-xl font-semibold"><PromptDisplay prompt={question.prompt} /></div>
@@ -20,7 +23,7 @@ const QuestionCard = ({ question, value, onChange }: Props) => {
             return (
               <label
                 key={i}
-                onClick={() => onChange(String(i))}
+                onClick={handleClickOption(i)}
                 className={clsx(
                   'flex items-center gap-3 px-4 py-4 rounded-lg border-[1.5px] cursor-pointer text-base font-medium',
                   selected
@@ -49,7 +52,7 @@ const QuestionCard = ({ question, value, onChange }: Props) => {
           className="mt-6 w-full p-4 border border-slate-200 rounded-lg text-base font-medium focus:outline-none focus:border-blue-600 focus:shadow-focus"
           placeholder="Type your answer…"
           value={value}
-          onChange={(e) => onChange(e.target.value)}
+          onChange={handleChangeAnswer}
           autoFocus
         />
       )}

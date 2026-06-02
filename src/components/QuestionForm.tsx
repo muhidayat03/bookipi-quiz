@@ -42,6 +42,18 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
   const type = watch('type')
   const { fields, append, remove } = useFieldArray({ control, name: 'options' })
 
+  const handleAddOption = () => append({ value: '' })
+
+  const handleRemoveOption = (index: number) => () => {
+    const current = getValues('correctAnswerIndex')
+    remove(index)
+    if (current === String(index)) {
+      setValue('correctAnswerIndex', undefined, { shouldValidate: true })
+    } else if (current !== undefined && Number(current) > index) {
+      setValue('correctAnswerIndex', String(Number(current) - 1))
+    }
+  }
+
   const handleFormSubmit = async (values: QuestionFormValues) => {
     await onSubmit(values)
     if (!defaultValues)
@@ -125,15 +137,7 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
                   <button
                     type="button"
                     className="w-8 h-8 rounded-lg border border-slate-200 bg-white text-slate-500 cursor-pointer grid place-items-center text-sm duration-120 hover:bg-red-50 hover:text-red-800 hover:border-red-200"
-                    onClick={() => {
-                      const current = getValues('correctAnswerIndex')
-                      remove(index)
-                      if (current === String(index)) {
-                        setValue('correctAnswerIndex', undefined, { shouldValidate: true })
-                      } else if (current !== undefined && Number(current) > index) {
-                        setValue('correctAnswerIndex', String(Number(current) - 1))
-                      }
-                    }}
+                    onClick={handleRemoveOption(index)}
                     aria-label="Remove option"
                   >
                     ✕
@@ -154,7 +158,7 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
             <button
               type="button"
               className="mt-1 px-5 py-3 border border-slate-200 bg-white text-slate-900 text-sm font-semibold rounded-lg duration-120 hover:bg-slate-50 hover:border-slate-300"
-              onClick={() => append({ value: '' })}
+              onClick={handleAddOption}
             >
               + Add option
             </button>

@@ -21,11 +21,18 @@ const QuizBuilderPage = () => {
   const quizId = id ? Number(id) : 0
   const navigate = useNavigate()
   const [editingQuestionId, setEditingQuestionId] = useState<number | null>(null)
+  const [copied, setCopied] = useState(false)
 
   const { data: quiz, isLoading, error } = useQuiz(quizId)
   const createQuiz = useCreateQuiz()
   const updateQuiz = useUpdateQuiz(quizId)
   const addQuestion = useAddQuestion(quizId)
+
+  const handleCopyId = () => {
+    navigator.clipboard?.writeText(String(quizId))
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   const quizFormError = getApiError(createQuiz.error, 'Failed to save quiz.') || getApiError(updateQuiz.error, 'Failed to save quiz.')
   const addQuestionError = getApiError(addQuestion.error, 'Failed to add question.')
@@ -79,9 +86,9 @@ const QuizBuilderPage = () => {
           </span>
           <button
             className="ml-auto px-3 py-2 border border-slate-200 bg-white text-slate-900 text-[13px] font-semibold rounded-lg duration-120 hover:bg-slate-50 hover:border-slate-300"
-            onClick={() => navigator.clipboard?.writeText(String(quizId))}
+            onClick={handleCopyId}
           >
-            Copy
+            {copied ? 'Copied!' : 'Copy'}
           </button>
         </div>
       )}
