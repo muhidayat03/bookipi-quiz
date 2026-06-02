@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import {
   ErrorCard,
@@ -21,6 +22,7 @@ const BuilderPage = () => {
   const { id } = useParams()
   const quizId = id ? Number(id) : 0
   const navigate = useNavigate()
+  const [editingQuestionId, setEditingQuestionId] = useState<number | null>(null)
 
   const { data: quiz, isLoading, error } = useQuiz(quizId)
   const createQuiz = useCreateQuiz()
@@ -54,7 +56,7 @@ const BuilderPage = () => {
         type: 'mcq',
         prompt: values.prompt,
         options: values.options.map((o) => o.value),
-        correctAnswer: values.correctAnswerIndex!,
+        correctAnswer: Number(values.correctAnswerIndex!),
       })
     } else {
       await addQuestion.mutateAsync({
@@ -73,7 +75,7 @@ const BuilderPage = () => {
           type: 'mcq',
           prompt: values.prompt,
           options: values.options.map((o) => o.value),
-          correctAnswer: values.correctAnswerIndex!,
+          correctAnswer: Number(values.correctAnswerIndex!),
         },
       })
     } else {
@@ -136,19 +138,25 @@ const BuilderPage = () => {
             onDelete={(id) => deleteQuestion.mutate(id)}
             onEdit={handleEditQuestion}
             isEditing={updateQuestion.isPending}
+            editingId={editingQuestionId}
+            onEditingIdChange={setEditingQuestionId}
           />
 
-          <hr className="border-0 border-t border-slate-200 mt-7" />
-          <div className="bg-white border border-slate-200 rounded-xl shadow-card p-5.5 mt-5">
-            <div className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">
-              Add a question
-            </div>
-            <QuestionForm
-              onSubmit={handleAddQuestion}
-              isLoading={addQuestion.isPending}
-              error={addQuestionError}
-            />
-          </div>
+          {!editingQuestionId && (
+            <>
+              <hr className="border-0 border-t border-slate-200 mt-7" />
+              <div className="bg-white border border-slate-200 rounded-xl shadow-card p-5.5 mt-5">
+                <div className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">
+                  Add a question
+                </div>
+                <QuestionForm
+                  onSubmit={handleAddQuestion}
+                  isLoading={addQuestion.isPending}
+                  error={addQuestionError}
+                />
+              </div>
+            </>
+          )}
         </>
       )}
     </>

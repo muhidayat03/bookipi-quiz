@@ -5,7 +5,7 @@ export interface QuestionFormValues {
   type: 'mcq' | 'short'
   prompt: string
   options: { value: string }[]
-  correctAnswerIndex?: number
+  correctAnswerIndex?: string
   correctAnswerText?: string
 }
 
@@ -110,7 +110,6 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
                   style={{ width: 18, height: 18, accentColor: 'var(--color-blue-600)', flexShrink: 0, cursor: 'pointer' }}
                   {...register('correctAnswerIndex', {
                     required: 'Select the correct answer',
-                    valueAsNumber: true,
                   })}
                 />
                 <input
@@ -126,10 +125,10 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
                     onClick={() => {
                       const current = getValues('correctAnswerIndex')
                       remove(index)
-                      if (current === index) {
-                        setValue('correctAnswerIndex', undefined as unknown as number, { shouldValidate: true })
-                      } else if (current !== undefined && current > index) {
-                        setValue('correctAnswerIndex', current - 1)
+                      if (current === String(index)) {
+                        setValue('correctAnswerIndex', undefined, { shouldValidate: true })
+                      } else if (current !== undefined && Number(current) > index) {
+                        setValue('correctAnswerIndex', String(Number(current) - 1))
                       }
                     }}
                     aria-label="Remove option"

@@ -1,5 +1,4 @@
 import clsx from 'clsx'
-import { useState } from 'react'
 import type { Question } from '@/types'
 import QuestionForm, { type QuestionFormValues } from './QuestionForm'
 import PromptDisplay from './PromptDisplay'
@@ -9,11 +8,11 @@ interface Props {
   onDelete: (id: number) => void
   onEdit: (id: number, values: QuestionFormValues) => Promise<void>
   isEditing?: boolean
+  editingId: number | null
+  onEditingIdChange: (id: number | null) => void
 }
 
-const QuestionList = ({ questions, onDelete, onEdit, isEditing }: Props) => {
-  const [editingId, setEditingId] = useState<number | null>(null)
-
+const QuestionList = ({ questions, onDelete, onEdit, isEditing, editingId, onEditingIdChange }: Props) => {
   if (questions.length === 0) {
     return (
       <div className="text-center py-12 px-6 text-slate-500 border border-dashed border-slate-300 rounded-xl bg-white">
@@ -31,7 +30,7 @@ const QuestionList = ({ questions, onDelete, onEdit, isEditing }: Props) => {
           key={q.id}
           className={clsx(
             'bg-white border border-slate-200 rounded-xl shadow-card px-5 py-5',
-            editingId === q.id && 'border-blue-600 shadow-focus',
+            editingId === q.id && 'border-blue-600 shadow-focus'
           )}
         >
           {editingId === q.id ? (
@@ -45,16 +44,19 @@ const QuestionList = ({ questions, onDelete, onEdit, isEditing }: Props) => {
                   type: q.type as 'mcq' | 'short',
                   prompt: q.prompt,
                   options: q.options?.map((o) => ({ value: o })) ?? [
-                    { value: '' }, { value: '' }, { value: '' }, { value: '' },
+                    { value: '' },
+                    { value: '' },
+                    { value: '' },
+                    { value: '' },
                   ],
-                  correctAnswerIndex: q.type === 'mcq' ? (q.correctAnswer as number) : undefined,
+                  correctAnswerIndex: q.type === 'mcq' ? String(q.correctAnswer) : undefined,
                   correctAnswerText: q.type === 'short' ? String(q.correctAnswer ?? '') : undefined,
                 }}
                 onSubmit={async (values) => {
                   await onEdit(q.id, values)
-                  setEditingId(null)
+                  onEditingIdChange(null)
                 }}
-                onCancel={() => setEditingId(null)}
+                onCancel={() => onEditingIdChange(null)}
                 isLoading={isEditing}
                 submitLabel="Save changes"
               />
@@ -68,14 +70,16 @@ const QuestionList = ({ questions, onDelete, onEdit, isEditing }: Props) => {
                 <span
                   className={clsx(
                     'text-[10.5px] font-semibold px-2 py-1 rounded-full inline-flex items-center gap-1 uppercase tracking-wider',
-                    q.type === 'short' ? 'bg-violet-50 text-violet-700' : 'bg-blue-50 text-blue-700',
+                    q.type === 'short' ? 'bg-violet-50 text-violet-700' : 'bg-blue-50 text-blue-700'
                   )}
                 >
                   {q.type === 'mcq' ? 'Multiple choice' : 'Short answer'}
                 </span>
-                <div className="font-semibold text-[15.5px] leading-snug mt-2"><PromptDisplay prompt={q.prompt} /></div>
+                <div className="font-semibold text-[15.5px] leading-snug mt-6">
+                  <PromptDisplay prompt={q.prompt} />
+                </div>
                 {q.type === 'mcq' && q.options && (
-                  <ul className="list-none mt-3 p-0 flex flex-col gap-2">
+                  <ul className="list-none mt-6 p-0 flex flex-col gap-2">
                     {q.options.map((o, oi) => (
                       <li
                         key={oi}
@@ -83,13 +87,13 @@ const QuestionList = ({ questions, onDelete, onEdit, isEditing }: Props) => {
                           'flex items-center gap-2 text-sm px-3 py-2 rounded-lg',
                           oi === q.correctAnswer
                             ? 'bg-green-50 text-green-800 font-semibold'
-                            : 'bg-slate-50 text-slate-500',
+                            : 'bg-slate-50 text-slate-500'
                         )}
                       >
                         <span
                           className={clsx(
                             'w-4 h-4 rounded-full border-2 border-current shrink-0',
-                            oi === q.correctAnswer ? 'opacity-100' : 'opacity-35',
+                            oi === q.correctAnswer ? 'opacity-100' : 'opacity-35'
                           )}
                         />
                         {o}
@@ -99,7 +103,7 @@ const QuestionList = ({ questions, onDelete, onEdit, isEditing }: Props) => {
                   </ul>
                 )}
                 {q.type === 'short' && (
-                  <div className="mt-3 text-sm text-slate-500">
+                  <div className="mt-6 text-sm text-slate-500">
                     Accepted answer:{' '}
                     <b className="font-mono font-semibold bg-green-50 text-green-800 px-2 py-px rounded">
                       {String(q.correctAnswer)}
@@ -110,7 +114,7 @@ const QuestionList = ({ questions, onDelete, onEdit, isEditing }: Props) => {
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   className="w-8 h-8 rounded-lg border border-slate-200 bg-white text-slate-500 cursor-pointer grid place-items-center text-sm duration-120 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300"
-                  onClick={() => setEditingId(q.id)}
+                  onClick={() => onEditingIdChange(q.id)}
                   title="Edit"
                 >
                   ✎
