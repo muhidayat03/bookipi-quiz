@@ -20,7 +20,14 @@ vi.mock('react-router', async () => {
   return { ...actual, useNavigate: () => vi.fn() }
 })
 
-const mockMutation = { mutate: vi.fn(), mutateAsync: vi.fn().mockResolvedValue({}), isPending: false, isError: false, error: null, variables: undefined }
+const mockMutation = {
+  mutate: vi.fn(),
+  mutateAsync: vi.fn().mockResolvedValue({}),
+  isPending: false,
+  isError: false,
+  error: null,
+  variables: undefined,
+}
 
 const mockQuiz: Quiz = {
   id: 5,
@@ -43,7 +50,13 @@ const renderPage = (route = '/builder') =>
 
 beforeEach(() => {
   vi.clearAllMocks()
-  vi.mocked(queries.useQuiz).mockReturnValue({ data: mockQuiz, isLoading: false, isError: false, error: null, refetch: vi.fn() } as any)
+  vi.mocked(queries.useQuiz).mockReturnValue({
+    data: mockQuiz,
+    isLoading: false,
+    isError: false,
+    error: null,
+    refetch: vi.fn(),
+  } as any)
   vi.mocked(queries.useCreateQuiz).mockReturnValue(mockMutation as any)
   vi.mocked(queries.useUpdateQuiz).mockReturnValue(mockMutation as any)
   vi.mocked(queries.useAddQuestion).mockReturnValue(mockMutation as any)
@@ -63,7 +76,13 @@ describe('QuizBuilderPage', () => {
   })
 
   it('shows an error card when the quiz fails to load', () => {
-    vi.mocked(queries.useQuiz).mockReturnValue({ data: undefined, isLoading: false, isError: true, error: new Error('fail'), refetch: vi.fn() } as any)
+    vi.mocked(queries.useQuiz).mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isError: true,
+      error: new Error('fail'),
+      refetch: vi.fn(),
+    } as any)
     renderPage('/builder/5')
     expect(screen.getByText('Failed to load quiz')).toBeInTheDocument()
   })

@@ -29,7 +29,7 @@ export const updateQuiz = async (
     description: string
     timeLimitSeconds: number
     isPublished: boolean
-  }>,
+  }>
 ): Promise<Quiz> => {
   const { data } = await client.patch(endpoints.quiz(id), payload)
   return data

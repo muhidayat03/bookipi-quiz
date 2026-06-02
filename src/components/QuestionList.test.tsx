@@ -86,7 +86,13 @@ describe('QuestionList', () => {
 
   it('calls setEditingQuestionId with the question id when edit is clicked', async () => {
     const setEditingQuestionId = vi.fn()
-    render(<QuestionList {...defaultProps} questions={questions} setEditingQuestionId={setEditingQuestionId} />)
+    render(
+      <QuestionList
+        {...defaultProps}
+        questions={questions}
+        setEditingQuestionId={setEditingQuestionId}
+      />
+    )
     await userEvent.click(screen.getAllByTitle('Edit')[0])
     expect(setEditingQuestionId).toHaveBeenCalledWith(1)
   })
@@ -104,7 +110,14 @@ describe('QuestionList', () => {
 
   it('calls setEditingQuestionId with null when cancel is clicked in edit mode', async () => {
     const setEditingQuestionId = vi.fn()
-    render(<QuestionList {...defaultProps} questions={questions} editingQuestionId={1} setEditingQuestionId={setEditingQuestionId} />)
+    render(
+      <QuestionList
+        {...defaultProps}
+        questions={questions}
+        editingQuestionId={1}
+        setEditingQuestionId={setEditingQuestionId}
+      />
+    )
     await userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
     expect(setEditingQuestionId).toHaveBeenCalledWith(null)
   })

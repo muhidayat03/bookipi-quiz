@@ -20,19 +20,20 @@ const QuizForm = ({ defaultValues, onSubmit, isLoading, isSubmitting, error }: P
     formState: { errors },
   } = useForm<QuizFormValues>({ defaultValues })
 
-  if (isLoading) return (
-    <div className="bg-white border border-slate-200 rounded-xl shadow-card p-5.5 animate-pulse">
-      <div className="flex flex-col gap-3 mb-5">
-        <div className="h-5 bg-slate-200 rounded w-10" />
-        <div className="h-11 bg-slate-200 rounded-lg" />
+  if (isLoading)
+    return (
+      <div className="bg-white border border-slate-200 rounded-xl shadow-card p-5.5 animate-pulse">
+        <div className="flex flex-col gap-3 mb-5">
+          <div className="h-5 bg-slate-200 rounded w-10" />
+          <div className="h-11 bg-slate-200 rounded-lg" />
+        </div>
+        <div className="flex flex-col gap-2 mb-5">
+          <div className="h-5 bg-slate-200 rounded w-24" />
+          <div className="h-22 bg-slate-200 rounded-lg" />
+        </div>
+        <div className="h-11 bg-slate-200 rounded-lg w-27" />
       </div>
-      <div className="flex flex-col gap-2 mb-5">
-        <div className="h-5 bg-slate-200 rounded w-24" />
-        <div className="h-22 bg-slate-200 rounded-lg" />
-      </div>
-      <div className="h-11 bg-slate-200 rounded-lg w-27" />
-    </div>
-  )
+    )
 
   return (
     <form

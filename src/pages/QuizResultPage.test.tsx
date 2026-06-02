@@ -47,7 +47,11 @@ beforeEach(() => {
 
 describe('QuizResultPage', () => {
   it('redirects when result is null', () => {
-    vi.mocked(contextModule.useQuizContext).mockReturnValue({ result: null, attempt: null, antiCheat: { tabSwitches: 0, pastes: 0 } } as any)
+    vi.mocked(contextModule.useQuizContext).mockReturnValue({
+      result: null,
+      attempt: null,
+      antiCheat: { tabSwitches: 0, pastes: 0 },
+    } as any)
     renderPage()
     expect(screen.queryByText('Try Again')).not.toBeInTheDocument()
   })
@@ -77,7 +81,13 @@ describe('QuizResultPage', () => {
 
   it('shows correct and incorrect breakdown for each question', () => {
     vi.mocked(contextModule.useQuizContext).mockReturnValue({
-      result: { score: 1, details: [{ questionId: 1, correct: true }, { questionId: 2, correct: false, expected: 'Paris' }] },
+      result: {
+        score: 1,
+        details: [
+          { questionId: 1, correct: true },
+          { questionId: 2, correct: false, expected: 'Paris' },
+        ],
+      },
       attempt: null,
       antiCheat: { tabSwitches: 0, pastes: 0 },
     } as any)
@@ -88,7 +98,9 @@ describe('QuizResultPage', () => {
   })
 
   it('shows a suspicious activity warning when tab switches are detected', () => {
-    vi.mocked(contextModule.useQuizContext).mockReturnValue(makeContext(8, { antiCheat: { tabSwitches: 2, pastes: 0 } }) as any)
+    vi.mocked(contextModule.useQuizContext).mockReturnValue(
+      makeContext(8, { antiCheat: { tabSwitches: 2, pastes: 0 } }) as any
+    )
     renderPage()
     expect(screen.getByText('Suspicious activity detected')).toBeInTheDocument()
     expect(screen.getByText('Tab switches: 2')).toBeInTheDocument()

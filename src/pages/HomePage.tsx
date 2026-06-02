@@ -68,7 +68,9 @@ const HomePage = () => {
           </p>
 
           <div className="bg-white border border-slate-200 rounded-xl shadow-card p-6 mb-8">
-            <label htmlFor="quiz-id" className="font-semibold text-sm block mb-2">Quiz ID</label>
+            <label htmlFor="quiz-id" className="font-semibold text-sm block mb-2">
+              Quiz ID
+            </label>
             <div className="flex gap-3">
               <input
                 id="quiz-id"
@@ -104,7 +106,9 @@ const HomePage = () => {
             <div className="text-center px-6 py-12 text-slate-500 border border-dashed border-slate-300 rounded-xl bg-white">
               <div className="text-3xl mb-2">🔍</div>
               <div className="font-semibold text-slate-900 mb-1">No quizzes yet</div>
-              <div className="text-sm">Create your first quiz on the Builder tab to get started.</div>
+              <div className="text-sm">
+                Create your first quiz on the Builder tab to get started.
+              </div>
             </div>
           )}
           {published.length > 0 && (

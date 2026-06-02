@@ -8,12 +8,7 @@ import {
   type QuizFormValues,
   type QuestionFormValues,
 } from '@/components'
-import {
-  useQuiz,
-  useCreateQuiz,
-  useUpdateQuiz,
-  useAddQuestion,
-} from '@/queries'
+import { useQuiz, useCreateQuiz, useUpdateQuiz, useAddQuestion } from '@/queries'
 import { getApiError } from '@/utils'
 
 const QuizBuilderPage = () => {
@@ -34,7 +29,9 @@ const QuizBuilderPage = () => {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const quizFormError = getApiError(createQuiz.error, 'Failed to save quiz.') || getApiError(updateQuiz.error, 'Failed to save quiz.')
+  const quizFormError =
+    getApiError(createQuiz.error, 'Failed to save quiz.') ||
+    getApiError(updateQuiz.error, 'Failed to save quiz.')
   const addQuestionError = getApiError(addQuestion.error, 'Failed to add question.')
 
   const handleQuizSubmit = async (values: QuizFormValues) => {
@@ -62,7 +59,6 @@ const QuizBuilderPage = () => {
       })
     }
   }
-
 
   if (quizId > 0 && error)
     return <ErrorCard title="Failed to load quiz" message="Check your connection and try again." />

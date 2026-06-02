@@ -14,7 +14,9 @@ const QuestionCard = ({ question, value, onChange }: Props) => {
 
   return (
     <div className="bg-white border border-slate-200 rounded-xl shadow-card p-8">
-      <div className="text-xl font-semibold"><PromptDisplay prompt={question.prompt} /></div>
+      <div className="text-xl font-semibold">
+        <PromptDisplay prompt={question.prompt} />
+      </div>
 
       {question.type === 'mcq' && question.options?.length && (
         <div className="flex flex-col gap-3 mt-6">

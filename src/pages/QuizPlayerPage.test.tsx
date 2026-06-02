@@ -43,14 +43,34 @@ const mockAttempt: Attempt = {
 
 beforeEach(() => {
   vi.clearAllMocks()
-  vi.mocked(contextModule.useQuizContext).mockReturnValue({ attempt: mockAttempt, answers: {}, setAnswers: vi.fn(), setResult: vi.fn() } as any)
-  vi.mocked(queries.useSaveAnswer).mockReturnValue({ mutateAsync: vi.fn().mockResolvedValue({}), isPending: false, isError: false, error: null } as any)
-  vi.mocked(queries.useSubmitAttempt).mockReturnValue({ mutateAsync: vi.fn().mockResolvedValue({ score: 1, details: [] }), isPending: false, isError: false, error: null } as any)
+  vi.mocked(contextModule.useQuizContext).mockReturnValue({
+    attempt: mockAttempt,
+    answers: {},
+    setAnswers: vi.fn(),
+    setResult: vi.fn(),
+  } as any)
+  vi.mocked(queries.useSaveAnswer).mockReturnValue({
+    mutateAsync: vi.fn().mockResolvedValue({}),
+    isPending: false,
+    isError: false,
+    error: null,
+  } as any)
+  vi.mocked(queries.useSubmitAttempt).mockReturnValue({
+    mutateAsync: vi.fn().mockResolvedValue({ score: 1, details: [] }),
+    isPending: false,
+    isError: false,
+    error: null,
+  } as any)
 })
 
 describe('QuizPlayerPage', () => {
   it('redirects when attempt is null', () => {
-    vi.mocked(contextModule.useQuizContext).mockReturnValue({ attempt: null, answers: {}, setAnswers: vi.fn(), setResult: vi.fn() } as any)
+    vi.mocked(contextModule.useQuizContext).mockReturnValue({
+      attempt: null,
+      answers: {},
+      setAnswers: vi.fn(),
+      setResult: vi.fn(),
+    } as any)
     renderPage()
     expect(screen.queryByRole('button', { name: /next|submit/i })).not.toBeInTheDocument()
   })
@@ -78,7 +98,12 @@ describe('QuizPlayerPage', () => {
   })
 
   it('enables Next when an answer is present', () => {
-    vi.mocked(contextModule.useQuizContext).mockReturnValue({ attempt: mockAttempt, answers: { 1: 'some answer' }, setAnswers: vi.fn(), setResult: vi.fn() } as any)
+    vi.mocked(contextModule.useQuizContext).mockReturnValue({
+      attempt: mockAttempt,
+      answers: { 1: 'some answer' },
+      setAnswers: vi.fn(),
+      setResult: vi.fn(),
+    } as any)
     renderPage()
     expect(screen.getByRole('button', { name: 'Next →' })).toBeEnabled()
   })

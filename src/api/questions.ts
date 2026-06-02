@@ -10,7 +10,7 @@ export const addQuestion = async (
     options?: string[]
     correctAnswer: string | number
     position?: number
-  },
+  }
 ): Promise<Question> => {
   const { data } = await client.post(endpoints.questions(quizId), payload)
   return data
@@ -24,7 +24,7 @@ export const updateQuestion = async (
     prompt: string
     options: string[]
     correctAnswer: string | number
-  }>,
+  }>
 ): Promise<Question> => {
   const { data } = await client.patch(endpoints.question(id), payload)
   return data

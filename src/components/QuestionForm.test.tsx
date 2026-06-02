@@ -46,9 +46,9 @@ describe('QuestionForm', () => {
     await userEvent.type(options[3], 'D')
 
     // The correctAnswerIndex radios have numeric values; type radios have 'mcq'/'short'
-    const correctAnswerRadio = screen.getAllByRole('radio').find(
-      (r) => (r as HTMLInputElement).value === '0'
-    )!
+    const correctAnswerRadio = screen
+      .getAllByRole('radio')
+      .find((r) => (r as HTMLInputElement).value === '0')!
     await userEvent.click(correctAnswerRadio)
     await userEvent.click(screen.getByRole('button', { name: /add question/i }))
 

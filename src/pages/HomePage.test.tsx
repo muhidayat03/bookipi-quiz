@@ -36,7 +36,9 @@ const mockQuiz: Quiz = {
 beforeEach(() => {
   vi.clearAllMocks()
   vi.mocked(queries.useQuizzes).mockReturnValue({
-    data: undefined, isLoading: false, error: null,
+    data: undefined,
+    isLoading: false,
+    error: null,
   } as any)
 })
 
@@ -53,25 +55,41 @@ describe('HomePage', () => {
   })
 
   it('shows loading skeletons while quizzes are loading', () => {
-    vi.mocked(queries.useQuizzes).mockReturnValue({ data: undefined, isLoading: true, error: null } as any)
+    vi.mocked(queries.useQuizzes).mockReturnValue({
+      data: undefined,
+      isLoading: true,
+      error: null,
+    } as any)
     renderPage()
     expect(screen.getAllByTestId('quiz-card-loading').length).toBeGreaterThan(0)
   })
 
   it('shows error message when quizzes fail to load', () => {
-    vi.mocked(queries.useQuizzes).mockReturnValue({ data: undefined, isLoading: false, error: new Error('fail') } as any)
+    vi.mocked(queries.useQuizzes).mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      error: new Error('fail'),
+    } as any)
     renderPage()
     expect(screen.getByText('Failed to load quizzes.')).toBeInTheDocument()
   })
 
   it('shows empty state when there are no published quizzes', () => {
-    vi.mocked(queries.useQuizzes).mockReturnValue({ data: [], isLoading: false, error: null } as any)
+    vi.mocked(queries.useQuizzes).mockReturnValue({
+      data: [],
+      isLoading: false,
+      error: null,
+    } as any)
     renderPage()
     expect(screen.getByText('No quizzes yet')).toBeInTheDocument()
   })
 
   it('renders a quiz card for each published quiz', () => {
-    vi.mocked(queries.useQuizzes).mockReturnValue({ data: [mockQuiz], isLoading: false, error: null } as any)
+    vi.mocked(queries.useQuizzes).mockReturnValue({
+      data: [mockQuiz],
+      isLoading: false,
+      error: null,
+    } as any)
     renderPage()
     expect(screen.getByText('JS Fundamentals')).toBeInTheDocument()
   })

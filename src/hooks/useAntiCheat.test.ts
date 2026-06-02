@@ -24,7 +24,9 @@ describe('useAntiCheat', () => {
     const { result } = renderHook(() => useAntiCheat(5))
 
     Object.defineProperty(document, 'hidden', { value: true, configurable: true })
-    act(() => { document.dispatchEvent(new Event('visibilitychange')) })
+    act(() => {
+      document.dispatchEvent(new Event('visibilitychange'))
+    })
 
     expect(result.current.tabSwitches).toBe(1)
     expect(api.logEvent).toHaveBeenCalledWith(5, 'window_blur')
@@ -36,7 +38,9 @@ describe('useAntiCheat', () => {
     const { result } = renderHook(() => useAntiCheat(5))
 
     Object.defineProperty(document, 'hidden', { value: false, configurable: true })
-    act(() => { document.dispatchEvent(new Event('visibilitychange')) })
+    act(() => {
+      document.dispatchEvent(new Event('visibilitychange'))
+    })
 
     expect(result.current.tabSwitches).toBe(0)
     expect(api.logEvent).toHaveBeenCalledWith(5, 'window_focus')
@@ -45,19 +49,22 @@ describe('useAntiCheat', () => {
   it('increments pastes and logs copy_paste_detected on paste', () => {
     const { result } = renderHook(() => useAntiCheat(5))
 
-    act(() => { document.dispatchEvent(new Event('paste')) })
+    act(() => {
+      document.dispatchEvent(new Event('paste'))
+    })
 
     expect(result.current.pastes).toBe(1)
     expect(api.logEvent).toHaveBeenCalledWith(5, 'copy_paste_detected')
   })
 
   it('resets counts when attemptId changes to null', () => {
-    const { result, rerender } = renderHook(
-      ({ id }: { id: number | null }) => useAntiCheat(id),
-      { initialProps: { id: 5 as number | null } }
-    )
+    const { result, rerender } = renderHook(({ id }: { id: number | null }) => useAntiCheat(id), {
+      initialProps: { id: 5 as number | null },
+    })
 
-    act(() => { document.dispatchEvent(new Event('paste')) })
+    act(() => {
+      document.dispatchEvent(new Event('paste'))
+    })
     expect(result.current.pastes).toBe(1)
 
     rerender({ id: null })

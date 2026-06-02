@@ -125,4 +125,5 @@ yarn preview     # preview production build locally
 yarn test        # run tests once
 yarn test:watch  # run tests in watch mode
 yarn lint        # run ESLint
+yarn prettier    # format all files with Prettier
 ```

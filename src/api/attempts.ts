@@ -10,7 +10,7 @@ export const startAttempt = async (quizId: number): Promise<Attempt> => {
 export const saveAnswer = async (
   attemptId: number,
   questionId: number,
-  value: string,
+  value: string
 ): Promise<void> => {
   await client.post(endpoints.attemptAnswer(attemptId), { questionId, value })
 }

@@ -47,7 +47,10 @@ const QuizDetailPage = () => {
 
   if (quizLoading)
     return (
-      <div className="bg-white border border-slate-200 rounded-xl shadow-card p-10 text-center" data-testid="loading-skeleton">
+      <div
+        className="bg-white border border-slate-200 rounded-xl shadow-card p-10 text-center"
+        data-testid="loading-skeleton"
+      >
         <div className="animate-pulse">
           <div className="h-7 bg-slate-200 rounded w-48 mx-auto mb-3" />
           <div className="h-4 bg-slate-200 rounded w-64 mx-auto mb-6" />

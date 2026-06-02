@@ -21,7 +21,14 @@ interface Props {
   error?: string
 }
 
-const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabel, error }: Props) => {
+const QuestionForm = ({
+  onSubmit,
+  onCancel,
+  defaultValues,
+  isLoading,
+  submitLabel,
+  error,
+}: Props) => {
   const {
     register,
     handleSubmit,
@@ -76,10 +83,15 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
               'flex flex-1 items-center gap-2 px-4 py-3 border-[1.5px] rounded-lg cursor-pointer font-medium text-sm duration-120',
               type === 'mcq'
                 ? 'border-blue-600 bg-blue-50 text-blue-700 font-semibold'
-                : 'border-slate-200 hover:border-slate-300',
+                : 'border-slate-200 hover:border-slate-300'
             )}
           >
-            <input type="radio" value="mcq" className="accent-blue-600 shrink-0" {...register('type')} />
+            <input
+              type="radio"
+              value="mcq"
+              className="accent-blue-600 shrink-0"
+              {...register('type')}
+            />
             Multiple choice
           </label>
           <label
@@ -87,10 +99,15 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
               'flex flex-1 items-center gap-2 px-4 py-3 border-[1.5px] rounded-lg cursor-pointer font-medium text-sm duration-120',
               type === 'short'
                 ? 'border-blue-600 bg-blue-50 text-blue-700 font-semibold'
-                : 'border-slate-200 hover:border-slate-300',
+                : 'border-slate-200 hover:border-slate-300'
             )}
           >
-            <input type="radio" value="short" className="accent-blue-600 shrink-0" {...register('type')} />
+            <input
+              type="radio"
+              value="short"
+              className="accent-blue-600 shrink-0"
+              {...register('type')}
+            />
             Short answer
           </label>
         </div>
@@ -122,7 +139,13 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
                 <input
                   type="radio"
                   value={index}
-                  style={{ width: 18, height: 18, accentColor: 'var(--color-blue-600)', flexShrink: 0, cursor: 'pointer' }}
+                  style={{
+                    width: 18,
+                    height: 18,
+                    accentColor: 'var(--color-blue-600)',
+                    flexShrink: 0,
+                    cursor: 'pointer',
+                  }}
                   {...register('correctAnswerIndex', {
                     required: 'Select the correct answer',
                   })}
@@ -152,7 +175,9 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
             </div>
           ))}
           {errors.correctAnswerIndex && (
-            <div className="text-red-600 text-[13px] font-medium">{errors.correctAnswerIndex.message}</div>
+            <div className="text-red-600 text-[13px] font-medium">
+              {errors.correctAnswerIndex.message}
+            </div>
           )}
           {fields.length < MCQ_MAX_OPTIONS && (
             <button
@@ -179,7 +204,9 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
             {...register('correctAnswerText', { required: 'Provide the accepted answer.' })}
           />
           {errors.correctAnswerText && (
-            <div className="text-red-600 text-[13px] font-medium">{errors.correctAnswerText.message}</div>
+            <div className="text-red-600 text-[13px] font-medium">
+              {errors.correctAnswerText.message}
+            </div>
           )}
         </div>
       )}
