@@ -119,7 +119,7 @@ const QuestionForm = ({
         </label>
         <textarea
           id="question-prompt"
-          placeholder="e.g. What does typeof null evaluate to?"
+          placeholder={`e.g. What does this log?\n\`\`\`\nconsole.log(typeof null)\n\`\`\``}
           className={`w-full px-3 py-3 border rounded-lg bg-white text-slate-900 outline-none focus:border-blue-600 focus:shadow-focus duration-120 resize-y min-h-[88px] ${errors.prompt ? 'border-red-500' : 'border-slate-200'}`}
           {...register('prompt', { required: 'A question prompt is required.' })}
         />
