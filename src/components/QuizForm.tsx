@@ -37,7 +37,7 @@ const QuizForm = ({ defaultValues, onSubmit, isLoading, isSubmitting, error }: P
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="bg-white border border-slate-200 rounded-xl shadow-card p-[22px]"
+      className="bg-white border border-slate-200 rounded-xl shadow-card p-5"
     >
       <div className="flex flex-col gap-2 mb-5">
         <label htmlFor="quiz-title" className="font-semibold text-sm">

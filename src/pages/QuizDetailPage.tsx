@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from 'react-router'
-import axios from 'axios'
 import { ErrorCard } from '@/components'
+import { getApiError } from '@/utils'
 import { useQuiz, useStartAttempt } from '@/queries'
 import { useQuizContext } from '@/context'
 
@@ -19,16 +19,12 @@ const QuizDetailPage = () => {
     refetch: refetchQuiz,
   } = useQuiz(quizId)
 
-  const quizErrorMsg = axios.isAxiosError(quizErrorData)
-    ? quizErrorData.response?.data?.error
-    : 'Failed to load quiz.'
+  const quizErrorMsg = getApiError(quizErrorData, 'Failed to load quiz.')
   const startAttempt = useStartAttempt()
 
   const invalidId = !id || isNaN(quizId)
   const startError = startAttempt.isError
-    ? axios.isAxiosError(startAttempt.error)
-      ? startAttempt.error.response?.data?.error
-      : 'Failed to start quiz. Make sure the quiz is published.'
+    ? getApiError(startAttempt.error, 'Failed to start quiz.')
     : null
 
   const handleStart = async () => {

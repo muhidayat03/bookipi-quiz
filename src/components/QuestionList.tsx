@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 import { useState } from 'react'
-import type { Question } from '../types'
+import type { Question } from '@/types'
 import QuestionForm, { type QuestionFormValues } from './QuestionForm'
 
 interface Props {

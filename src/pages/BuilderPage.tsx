@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useParams, useNavigate } from 'react-router'
 import {
   ErrorCard,
@@ -7,7 +6,7 @@ import {
   QuestionList,
   type QuizFormValues,
   type QuestionFormValues,
-} from '../components'
+} from '@/components'
 import {
   useQuiz,
   useCreateQuiz,
@@ -15,7 +14,8 @@ import {
   useAddQuestion,
   useUpdateQuestion,
   useDeleteQuestion,
-} from '../queries'
+} from '@/queries'
+import { getApiError } from '@/utils'
 
 const BuilderPage = () => {
   const { id } = useParams()
@@ -29,43 +29,39 @@ const BuilderPage = () => {
   const updateQuestion = useUpdateQuestion(quizId)
   const deleteQuestion = useDeleteQuestion(quizId)
 
-  const [quizError, setQuizError] = useState('')
-  const [addError, setAddError] = useState('')
+  const quizFormError = createQuiz.isError
+    ? getApiError(createQuiz.error, 'Failed to save quiz.')
+    : updateQuiz.isError
+      ? getApiError(updateQuiz.error, 'Failed to save quiz.')
+      : ''
+
+  const addQuestionError = addQuestion.isError
+    ? getApiError(addQuestion.error, 'Failed to add question.')
+    : ''
 
   const handleQuizSubmit = async (values: QuizFormValues) => {
-    try {
-      setQuizError('')
-      if (quizId) {
-        await updateQuiz.mutateAsync({ ...values, isPublished: true })
-      } else {
-        const created = await createQuiz.mutateAsync({ ...values, isPublished: true })
-        navigate(`/builder/${created.id}`)
-      }
-    } catch {
-      setQuizError('Failed to save quiz. Please try again.')
+    if (quizId) {
+      await updateQuiz.mutateAsync({ ...values, isPublished: true })
+    } else {
+      const created = await createQuiz.mutateAsync({ ...values, isPublished: true })
+      navigate(`/builder/${created.id}`)
     }
   }
 
   const handleAddQuestion = async (values: QuestionFormValues) => {
-    try {
-      setAddError('')
-      if (values.type === 'mcq') {
-        await addQuestion.mutateAsync({
-          type: 'mcq',
-          prompt: values.prompt,
-          options: values.options.map((o) => o.value),
-          correctAnswer: values.correctAnswerIndex!,
-        })
-      } else {
-        await addQuestion.mutateAsync({
-          type: 'short',
-          prompt: values.prompt,
-          correctAnswer: values.correctAnswerText!,
-        })
-      }
-    } catch {
-      setAddError('Failed to add question. Please try again.')
-      throw new Error()
+    if (values.type === 'mcq') {
+      await addQuestion.mutateAsync({
+        type: 'mcq',
+        prompt: values.prompt,
+        options: values.options.map((o) => o.value),
+        correctAnswer: values.correctAnswerIndex!,
+      })
+    } else {
+      await addQuestion.mutateAsync({
+        type: 'short',
+        prompt: values.prompt,
+        correctAnswer: values.correctAnswerText!,
+      })
     }
   }
 
@@ -127,7 +123,7 @@ const BuilderPage = () => {
         defaultValues={quiz ? { title: quiz.title, description: quiz.description } : undefined}
         onSubmit={handleQuizSubmit}
         isSubmitting={createQuiz.isPending || updateQuiz.isPending}
-        error={quizError}
+        error={quizFormError}
       />
 
       {quizId > 0 && !isLoading && (
@@ -150,7 +146,7 @@ const BuilderPage = () => {
             <QuestionForm
               onSubmit={handleAddQuestion}
               isLoading={addQuestion.isPending}
-              error={addError}
+              error={addQuestionError}
             />
           </div>
         </>

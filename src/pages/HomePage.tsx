@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router'
-import { QuizCard } from '../components'
-import { useQuizzes } from '../queries'
+import { QuizCard } from '@/components'
+import { useQuizzes } from '@/queries'
 
 const HomePage = () => {
   const location = useLocation()
