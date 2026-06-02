@@ -22,6 +22,18 @@ export const useDeleteQuestion = (quizId: number) => {
   const qc = useQueryClient()
   return useMutation({
     mutationFn: (id: number) => deleteQuestion(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: queryKeys.quiz(quizId) }),
+    onMutate: async (id) => {
+      await qc.cancelQueries({ queryKey: queryKeys.quiz(quizId) })
+      const previous = qc.getQueryData<{ questions: { id: number }[] }>(queryKeys.quiz(quizId))
+      qc.setQueryData<{ questions: { id: number }[] }>(queryKeys.quiz(quizId), (old) => {
+        if (!old) return old
+        return { ...old, questions: old.questions.filter((q) => q.id !== id) }
+      })
+      return { previous }
+    },
+    onError: (_err, _id, context) => {
+      if (context?.previous) qc.setQueryData(queryKeys.quiz(quizId), context.previous)
+    },
+    onSettled: () => qc.invalidateQueries({ queryKey: queryKeys.quiz(quizId) }),
   })
 }

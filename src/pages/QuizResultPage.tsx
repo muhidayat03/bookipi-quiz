@@ -2,6 +2,9 @@ import clsx from 'clsx'
 import { Navigate, useNavigate, useParams } from 'react-router'
 import { useQuizContext } from '@/context'
 
+const SCORE_EXCELLENT_THRESHOLD = 80
+const SCORE_NICE_THRESHOLD = 50
+
 const QuizResultPage = () => {
   const { id } = useParams()
   const navigate = useNavigate()
@@ -16,7 +19,7 @@ const QuizResultPage = () => {
   const total = attempt?.quiz.questions.length ?? result.details.length
   const percentage = Math.round((result.score / total) * 100)
   const feedback =
-    percentage >= 80 ? 'Excellent work!' : percentage >= 50 ? 'Nice effort.' : 'Keep practicing!'
+    percentage >= SCORE_EXCELLENT_THRESHOLD ? 'Excellent work!' : percentage >= SCORE_NICE_THRESHOLD ? 'Nice effort.' : 'Keep practicing!'
 
   return (
     <div className="pb-24">

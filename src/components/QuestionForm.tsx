@@ -1,6 +1,9 @@
 import clsx from 'clsx'
 import { useForm, useFieldArray } from 'react-hook-form'
 
+const MCQ_DEFAULT_OPTIONS = 4
+const MCQ_MAX_OPTIONS = 6
+
 export interface QuestionFormValues {
   type: 'mcq' | 'short'
   prompt: string
@@ -32,7 +35,7 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
     shouldUnregister: true,
     defaultValues: defaultValues ?? {
       type: 'mcq',
-      options: [{ value: '' }, { value: '' }, { value: '' }, { value: '' }],
+      options: Array.from({ length: MCQ_DEFAULT_OPTIONS }, () => ({ value: '' })),
     },
   })
 
@@ -45,7 +48,7 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
       reset({
         type: values.type,
         prompt: '',
-        options: [{ value: '' }, { value: '' }, { value: '' }, { value: '' }],
+        options: Array.from({ length: MCQ_DEFAULT_OPTIONS }, () => ({ value: '' })),
         correctAnswerIndex: undefined,
         correctAnswerText: '',
       })
@@ -147,7 +150,7 @@ const QuestionForm = ({ onSubmit, onCancel, defaultValues, isLoading, submitLabe
           {errors.correctAnswerIndex && (
             <div className="text-red-600 text-[13px] font-medium">{errors.correctAnswerIndex.message}</div>
           )}
-          {fields.length < 6 && (
+          {fields.length < MCQ_MAX_OPTIONS && (
             <button
               type="button"
               className="mt-1 px-5 py-3 border border-slate-200 bg-white text-slate-900 text-sm font-semibold rounded-lg duration-120 hover:bg-slate-50 hover:border-slate-300"
