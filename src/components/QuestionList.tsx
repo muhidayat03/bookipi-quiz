@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { useState } from 'react'
 import type { Question } from '@/types'
 import QuestionForm, { type QuestionFormValues } from './QuestionForm'
+import PromptDisplay from './PromptDisplay'
 
 interface Props {
   questions: Question[]
@@ -72,7 +73,7 @@ const QuestionList = ({ questions, onDelete, onEdit, isEditing }: Props) => {
                 >
                   {q.type === 'mcq' ? 'Multiple choice' : 'Short answer'}
                 </span>
-                <div className="font-semibold text-[15.5px] leading-snug mt-2">{q.prompt}</div>
+                <div className="font-semibold text-[15.5px] leading-snug mt-2"><PromptDisplay prompt={q.prompt} /></div>
                 {q.type === 'mcq' && q.options && (
                   <ul className="list-none mt-3 p-0 flex flex-col gap-2">
                     {q.options.map((o, oi) => (

@@ -1,4 +1,5 @@
 export { default as ErrorCard } from './ErrorCard'
+export { default as PromptDisplay } from './PromptDisplay'
 export { default as QuestionCard } from './QuestionCard'
 export { default as QuestionForm } from './QuestionForm'
 export type { QuestionFormValues } from './QuestionForm'
