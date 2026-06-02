@@ -5,11 +5,10 @@ import { useQuizContext } from '@/context'
 const QuizResultPage = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { result, attempt, reset } = useQuizContext()
+  const { result, attempt, antiCheat } = useQuizContext()
 
   const handleRetry = () => {
-    reset()
-    navigate(`/quiz/${id}`)
+    navigate(`/quiz/${id}`, { replace: true })
   }
 
   if (!result) return <Navigate to={`/quiz/${id}`} replace />
@@ -30,6 +29,14 @@ const QuizResultPage = () => {
           {percentage}% correct — {feedback}
         </div>
       </div>
+
+      {(antiCheat.tabSwitches > 0 || antiCheat.pastes > 0) && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-5 py-4 text-sm mb-6 flex flex-col gap-1">
+          <div className="font-semibold">Suspicious activity detected</div>
+          {antiCheat.tabSwitches > 0 && <div>Tab switches: {antiCheat.tabSwitches}</div>}
+          {antiCheat.pastes > 0 && <div>Pastes: {antiCheat.pastes}</div>}
+        </div>
+      )}
 
       <div className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">
         Question breakdown

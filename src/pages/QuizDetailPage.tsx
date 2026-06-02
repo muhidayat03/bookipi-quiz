@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { ErrorCard } from '@/components'
 import { getApiError } from '@/utils'
@@ -9,7 +10,11 @@ const QuizDetailPage = () => {
   const navigate = useNavigate()
   const quizId = Number(id)
 
-  const { setAttempt } = useQuizContext()
+  const { setAttempt, reset } = useQuizContext()
+
+  useEffect(() => {
+    reset()
+  }, [reset])
 
   const {
     data: quiz,

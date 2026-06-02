@@ -3,6 +3,7 @@ import { useNavigate, useParams, Navigate } from 'react-router'
 import { QuestionCard } from '@/components'
 import { useSaveAnswer, useSubmitAttempt } from '@/queries'
 import { useQuizContext } from '@/context'
+import { getApiError } from '@/utils'
 
 const QuizPlayerPage = () => {
   const { id } = useParams()
@@ -45,7 +46,7 @@ const QuizPlayerPage = () => {
     })
     const result = await submitAttempt.mutateAsync(attempt.id)
     setResult(result)
-    navigate(`/quiz/${quizId}/results`)
+    navigate(`/quiz/${quizId}/results`, { replace: true })
   }
 
   return (
@@ -69,7 +70,14 @@ const QuizPlayerPage = () => {
           onChange={handleChangeAnswer}
         />
       )}
-      <div className="flex items-center justify-between gap-3 mt-6">
+      {(saveAnswer.isError || submitAttempt.isError) && (
+        <p className="text-red-600 text-sm font-medium mt-4">
+          {saveAnswer.isError
+            ? getApiError(saveAnswer.error, 'Failed to save answer.')
+            : getApiError(submitAttempt.error, 'Failed to submit quiz.')}
+        </p>
+      )}
+      <div className="flex items-center justify-between gap-3 mt-4">
         <button
           onClick={handleBack}
           disabled={currentIndex === 0}
@@ -91,7 +99,7 @@ const QuizPlayerPage = () => {
             disabled={submitAttempt.isPending || saveAnswer.isPending || !currentAnswer}
             className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-lg duration-120"
           >
-            {submitAttempt.isPending ? 'Submitting…' : 'Submit Quiz'}
+            {submitAttempt.isPending || saveAnswer.isPending ? 'Submitting…' : 'Submit Quiz'}
           </button>
         )}
       </div>

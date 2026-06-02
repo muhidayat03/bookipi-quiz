@@ -1,10 +1,12 @@
 import { createContext, useContext } from 'react'
 import type { Attempt, SubmitResult } from '@/types'
+import type { AntiCheatCounts } from '@/hooks'
 
 interface QuizContextValue {
   attempt: Attempt | null
   answers: Record<number, string>
   result: SubmitResult | null
+  antiCheat: AntiCheatCounts
   setAttempt: (a: Attempt) => void
   setAnswers: (a: Record<number, string>) => void
   setResult: (r: SubmitResult) => void
