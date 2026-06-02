@@ -17,8 +17,6 @@ export const QuizProvider = ({ children }: { children: React.ReactNode }) => {
     setResult(null)
   }, [])
 
-  console.log('skuyy', attempt)
-
   return (
     <QuizContext.Provider
       value={{ attempt, answers, result, antiCheat, setAttempt, setAnswers, setResult, reset }}

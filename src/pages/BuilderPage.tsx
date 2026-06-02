@@ -13,8 +13,6 @@ import {
   useCreateQuiz,
   useUpdateQuiz,
   useAddQuestion,
-  useUpdateQuestion,
-  useDeleteQuestion,
 } from '@/queries'
 import { getApiError } from '@/utils'
 
@@ -28,18 +26,9 @@ const BuilderPage = () => {
   const createQuiz = useCreateQuiz()
   const updateQuiz = useUpdateQuiz(quizId)
   const addQuestion = useAddQuestion(quizId)
-  const updateQuestion = useUpdateQuestion(quizId)
-  const deleteQuestion = useDeleteQuestion(quizId)
 
-  const quizFormError = createQuiz.isError
-    ? getApiError(createQuiz.error, 'Failed to save quiz.')
-    : updateQuiz.isError
-      ? getApiError(updateQuiz.error, 'Failed to save quiz.')
-      : ''
-
-  const addQuestionError = addQuestion.isError
-    ? getApiError(addQuestion.error, 'Failed to add question.')
-    : ''
+  const quizFormError = getApiError(createQuiz.error, 'Failed to save quiz.') || getApiError(updateQuiz.error, 'Failed to save quiz.')
+  const addQuestionError = getApiError(addQuestion.error, 'Failed to add question.')
 
   const handleQuizSubmit = async (values: QuizFormValues) => {
     if (quizId) {
@@ -67,28 +56,6 @@ const BuilderPage = () => {
     }
   }
 
-  const handleEditQuestion = async (questionId: number, values: QuestionFormValues) => {
-    if (values.type === 'mcq') {
-      await updateQuestion.mutateAsync({
-        id: questionId,
-        payload: {
-          type: 'mcq',
-          prompt: values.prompt,
-          options: values.options.map((o) => o.value),
-          correctAnswer: Number(values.correctAnswerIndex!),
-        },
-      })
-    } else {
-      await updateQuestion.mutateAsync({
-        id: questionId,
-        payload: {
-          type: 'short',
-          prompt: values.prompt,
-          correctAnswer: values.correctAnswerText!,
-        },
-      })
-    }
-  }
 
   if (quizId > 0 && error)
     return <ErrorCard title="Failed to load quiz" message="Check your connection and try again." />
@@ -135,11 +102,9 @@ const BuilderPage = () => {
           </div>
           <QuestionList
             questions={quiz?.questions ?? []}
-            onDelete={(id) => deleteQuestion.mutate(id)}
-            onEdit={handleEditQuestion}
-            isEditing={updateQuestion.isPending}
-            editingId={editingQuestionId}
-            onEditingIdChange={setEditingQuestionId}
+            quizId={quizId}
+            editingQuestionId={editingQuestionId}
+            setEditingQuestionId={setEditingQuestionId}
           />
 
           {!editingQuestionId && (

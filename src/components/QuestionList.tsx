@@ -2,17 +2,47 @@ import clsx from 'clsx'
 import type { Question } from '@/types'
 import QuestionForm, { type QuestionFormValues } from './QuestionForm'
 import PromptDisplay from './PromptDisplay'
+import { useDeleteQuestion, useUpdateQuestion } from '@/queries'
+import { getApiError } from '@/utils'
 
 interface Props {
   questions: Question[]
-  onDelete: (id: number) => void
-  onEdit: (id: number, values: QuestionFormValues) => Promise<void>
-  isEditing?: boolean
-  editingId: number | null
-  onEditingIdChange: (id: number | null) => void
+  quizId: number
+  editingQuestionId: number | null
+  setEditingQuestionId: (id: number | null) => void
 }
 
-const QuestionList = ({ questions, onDelete, onEdit, isEditing, editingId, onEditingIdChange }: Props) => {
+const QuestionList = ({ questions, quizId, editingQuestionId, setEditingQuestionId }: Props) => {
+  const deleteQuestion = useDeleteQuestion(quizId)
+  const updateQuestion = useUpdateQuestion(quizId)
+
+  const handleSetEditingId = (id: number | null) => () => setEditingQuestionId(id)
+  const handleDelete = (id: number) => () => deleteQuestion.mutate(id)
+
+  const handleEdit = (questionId: number) => async (values: QuestionFormValues) => {
+    if (values.type === 'mcq') {
+      await updateQuestion.mutateAsync({
+        id: questionId,
+        payload: {
+          type: 'mcq',
+          prompt: values.prompt,
+          options: values.options.map((o) => o.value),
+          correctAnswer: Number(values.correctAnswerIndex!),
+        },
+      })
+    } else {
+      await updateQuestion.mutateAsync({
+        id: questionId,
+        payload: {
+          type: 'short',
+          prompt: values.prompt,
+          correctAnswer: values.correctAnswerText!,
+        },
+      })
+    }
+    setEditingQuestionId(null)
+  }
+
   if (questions.length === 0) {
     return (
       <div className="text-center py-12 px-6 text-slate-500 border border-dashed border-slate-300 rounded-xl bg-white">
@@ -30,10 +60,10 @@ const QuestionList = ({ questions, onDelete, onEdit, isEditing, editingId, onEdi
           key={q.id}
           className={clsx(
             'bg-white border border-slate-200 rounded-xl shadow-card px-5 py-5',
-            editingId === q.id && 'border-blue-600 shadow-focus'
+            editingQuestionId === q.id && 'border-blue-600 shadow-focus'
           )}
         >
-          {editingId === q.id ? (
+          {editingQuestionId === q.id ? (
             <>
               <div className="text-[13px] font-semibold text-slate-500 uppercase tracking-widest mb-4">
                 Editing question {i + 1}
@@ -52,12 +82,10 @@ const QuestionList = ({ questions, onDelete, onEdit, isEditing, editingId, onEdi
                   correctAnswerIndex: q.type === 'mcq' ? String(q.correctAnswer) : undefined,
                   correctAnswerText: q.type === 'short' ? String(q.correctAnswer ?? '') : undefined,
                 }}
-                onSubmit={async (values) => {
-                  await onEdit(q.id, values)
-                  onEditingIdChange(null)
-                }}
-                onCancel={() => onEditingIdChange(null)}
-                isLoading={isEditing}
+                onSubmit={handleEdit(q.id)}
+                onCancel={handleSetEditingId(null)}
+                isLoading={updateQuestion.isPending}
+                error={getApiError(updateQuestion.error, 'Failed to update question.')}
                 submitLabel="Save changes"
               />
             </>
@@ -110,18 +138,23 @@ const QuestionList = ({ questions, onDelete, onEdit, isEditing, editingId, onEdi
                     </b>
                   </div>
                 )}
+                {deleteQuestion.isError && deleteQuestion.variables === q.id && (
+                  <p className="text-red-600 text-sm font-medium mt-3">
+                    {getApiError(deleteQuestion.error, 'Failed to delete question.')}
+                  </p>
+                )}
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   className="w-8 h-8 rounded-lg border border-slate-200 bg-white text-slate-500 cursor-pointer grid place-items-center text-sm duration-120 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300"
-                  onClick={() => onEditingIdChange(q.id)}
+                  onClick={handleSetEditingId(q.id)}
                   title="Edit"
                 >
                   ✎
                 </button>
                 <button
                   className="w-8 h-8 rounded-lg border border-slate-200 bg-white text-red-700 cursor-pointer grid place-items-center text-sm duration-120 hover:bg-red-50 hover:text-red-800 hover:border-red-200"
-                  onClick={() => onDelete(q.id)}
+                  onClick={handleDelete(q.id)}
                   title="Delete"
                 >
                   ✕
